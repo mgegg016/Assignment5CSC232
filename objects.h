@@ -139,7 +139,7 @@ public:
         {
             if (accountBalance - amount < 0)   //if the withdrawal amount will cause a negative, just deduct the $25 fundCharge from the balance.
             {
-                accountBalance - fundCharge;
+                accountBalance -= fundCharge;
                 flag = 'H';   //assign flag as highrisk
                 accntNumber = accntNumber + "*";   //high risk account indicator
             }
