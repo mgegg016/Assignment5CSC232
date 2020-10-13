@@ -9,6 +9,8 @@
 using namespace std;
 
 void createNewAccount();
+bool allDigits(string s, int len);
+bool isDigit(char c);
 
 int locker=0; //variable to lock in which 
 
