@@ -11,11 +11,12 @@ using namespace std;
 void createNewAccount();
 bool allDigits(string s, int len);
 bool isDigit(char c);
+void getRandomAcoountNum();
 
 int locker=0; //variable to lock in which 
 
 vector <Bank> accounts;
-
+vector <Checking> checkingAccounts;
 int main(){
     bool play = true;
     int choice;
@@ -25,6 +26,7 @@ int main(){
     //v1.6
     //jay test
     while(play){
+        cout<<getRandomAccountNum()<<endl;
         cout<<"Version 1.7"<<endl;
         cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
         cin >> choice;
@@ -33,7 +35,7 @@ int main(){
         if (choice==1||choice==2||choice==3){
             switch(choice){
                 case 1:
-                    //todo creating a new account function
+                    
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
@@ -88,3 +90,18 @@ bool allDigits(string str, int len)
   
     return true; 
 } 
+
+void createAccounts(){
+    Checking tempChecking;
+    //Saving tempSaving;
+
+
+}
+
+int getRandomAccountNum(){
+    int max = 99999999;
+    int min = 11111111;
+    int output = min + (rand() % static_cast<int>(max - min + 1));
+    return output;
+
+}
