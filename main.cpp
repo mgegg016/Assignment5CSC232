@@ -22,10 +22,11 @@ int main(){
     string tempAN;
     Bank tempAccount;
     //readFile function needs to be called first
-    //v1.6
+    //v1.6 test
+
 
     while(play){
-        cout<<"Version 1.5"<<endl;
+        cout<<"Version 1.6"<<endl;
         cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
         cin >> choice;
         if (choice==1||choice==2||choice==3){
