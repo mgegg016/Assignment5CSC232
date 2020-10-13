@@ -31,6 +31,7 @@ int main(){
         cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
         cin >> choice;
         Checking c1;
+        Checking c2;
         cout<<c1.getAccntNumber()<<endl;
         if (choice==1||choice==2||choice==3){
             switch(choice){
