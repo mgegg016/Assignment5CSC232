@@ -33,6 +33,8 @@ int main(){
         Checking c1;
         Checking c2;
         Checking c3;
+        Checking c4;
+        
         cout<<c1.getAccntNumber()<<endl;
         if (choice==1||choice==2||choice==3){
             switch(choice){
