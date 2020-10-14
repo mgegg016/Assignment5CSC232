@@ -10,6 +10,7 @@ protected:
     bool open; //bool to see if the account is open or not
     double annualInterestRate;
     double annualService;
+    
 
 public:
     //contructor

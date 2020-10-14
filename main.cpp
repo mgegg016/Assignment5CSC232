@@ -104,7 +104,7 @@ void createAccounts(){
 
 int getRandomAccountNum(){
     int max = 99999999;
-    int min = 11111111;
+    int min = 10000000;
     int output = min + (rand() % static_cast<int>(max - min + 1));
     return output;
 
