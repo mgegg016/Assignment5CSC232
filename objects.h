@@ -49,7 +49,7 @@ public:
     void setOpenStatus(bool o) {
         open = o;
     }
-    void setInterestRate(double aI) {
+    virtual void setInterestRate(double aI) {           //changed to virtual cause Saving accounts over writes
         annualInterestRate = aI;
     }
     void setService(double aS) {
@@ -197,10 +197,18 @@ class Savings : public Bank{
         {
             return status;
         }
-        //sets the Status
+        //sets the Status and checks that the annual intrest rate is not more than 10% or less than .1%
         void setStatus(string s)
         {
             status = s;
+        }
+
+        void setInterestRate(double aI) 
+        {
+            if(aI < 10 || aI > 0.1)
+                annualInterestRate = aI;
+            else 
+                cout<<"Interest rate must be between 0.1% and 10%"<<endl;
         }
 
         double withdraw(double amount)
