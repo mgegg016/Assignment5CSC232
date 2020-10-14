@@ -56,14 +56,14 @@ public:
         annualService = aS;
     }
 
-    virtual double withdrawl(double amount) {
+    virtual double withdraw(double amount) {
         if (open) {
             if (amount > accountBalance) {
-                cout << "Withdrawl unsuccessful, insufficient amount!";
+                cout << "withdraw unsuccessful, insufficient amount!";
             }
             else {
                 accountBalance -= amount;
-                cout << "Withdrawl successful! Current Balance: " << accountBalance;
+                cout << "withdraw successful! Current Balance: " << accountBalance;
             }
         }
         else {
@@ -198,7 +198,7 @@ class Savings : public Bank{
             return status;
         }
 
-        double withdrawl(double amount)
+        double withdraw(double amount)
         {
             if(!open)
             {
@@ -206,13 +206,13 @@ class Savings : public Bank{
                 {
                     if(amount>accountBalance)
                     {
-                        cout<<"Withdrawl unsuccessful, insufficient amount!";
+                        cout<<"withdraw unsuccessful, insufficient amount!";
                     }
                 }
                 else
                 {
                     accountBalance-=amount;
-                    cout<<"Withdrawl successful! Current Balance: "<< accountBalance;
+                    cout<<"withdraw successful! Current Balance: "<< accountBalance;
                     if(accountBalance < 50)
                     {
                         status = "Inactive";
@@ -225,8 +225,7 @@ class Savings : public Bank{
             {
                 cout<<"Account Balance less than $50, cannot withdraw from Savings Account"<<endl;
             }
-    
-            
+
             return accountBalance;
         }
 
