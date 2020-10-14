@@ -10,7 +10,6 @@ protected:
     bool open; //bool to see if the account is open or not
     double annualInterestRate;
     double annualService;
-    
 
 public:
     //contructor
@@ -176,8 +175,74 @@ public:
             cout << "Account not open!";
         }
         return accountBalance;
-        
+    
     }
 };
 
 //sahej stuff
+class SavingsAcct : public Bank{
+    private:
+        string status;
+        double serviceCharge = 5;
+    public:
+        SavingsAcct() : Bank()
+        {
+            if(accountBalance > 50)
+                status = "Active";
+            else 
+                status = "Inactive";
+        }
+
+        string getStatus()
+        {
+            return status;
+        }
+
+        double withdrawl(double amount)
+        {
+            if(!open)
+            {
+                if(status == "Active")  //override 
+                {
+                    if(amount>accountBalance)
+                    {
+                        cout<<"Withdrawl unsuccessful, insufficient amount!";
+                    }
+                }
+                else
+                {
+                    accountBalance-=amount;
+                    cout<<"Withdrawl successful! Current Balance: "<< accountBalance;
+                    if(accountBalance < 50)
+                    {
+                        status = "Inactive";
+                        accountBalance = accountBalance - serviceCharge;
+                    }
+                            
+                }
+            }
+            else
+            {
+                cout<<"Account Balance less than $50, cannot withdraw from Savings Account"<<endl;
+            }
+    
+            
+            return accountBalance;
+        }
+
+        double deposit(double amount){
+            if(open)
+            {
+                accountBalance = accountBalance + amount;
+                cout<<"Deposit successful! Current balance: "<< accountBalance;
+                if(accountBalance > 50)
+                {
+                    status = "Active";
+                }
+            }
+            else{
+                cout<<"Account not open!";
+            }
+            return accountBalance;
+        }
+};
