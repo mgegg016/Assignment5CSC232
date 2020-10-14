@@ -182,8 +182,8 @@ public:
 //sahej stuff
 class Savings : public Bank{
     private:
-        string status;
-        double serviceCharge = 5;
+        string status;                      //a way to see if the account is active or inactive 
+        double serviceCharge = 5;           //if the account is inactive(balance is below 50) a service charge of 5 dollars is applied
     public:
         Savings() : Bank()
         {
@@ -192,17 +192,22 @@ class Savings : public Bank{
             else 
                 status = "Inactive";
         }
-
+        //returns the status
         string getStatus()
         {
             return status;
+        }
+        //sets the Status
+        void setStatus(string s)
+        {
+            status = s;
         }
 
         double withdraw(double amount)
         {
             if(!open)
             {
-                if(status == "Active")  //override 
+                if(status == "Active")  //override part to check the status 
                 {
                     if(amount>accountBalance)
                     {
@@ -216,7 +221,7 @@ class Savings : public Bank{
                     if(accountBalance < 50)
                     {
                         status = "Inactive";
-                        accountBalance = accountBalance - serviceCharge;
+                        accountBalance = accountBalance - serviceCharge; //adds a service charge with
                     }
                             
                 }
