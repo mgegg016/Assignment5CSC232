@@ -180,12 +180,12 @@ public:
 };
 
 //sahej stuff
-class SavingsAcct : public Bank{
+class Savings : public Bank{
     private:
         string status;
         double serviceCharge = 5;
     public:
-        SavingsAcct() : Bank()
+        Savings() : Bank()
         {
             if(accountBalance > 50)
                 status = "Active";
