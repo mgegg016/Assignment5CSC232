@@ -53,6 +53,21 @@ int main(){
                     cin>>tempAN;
                     if(allDigits(tempAN.substr(1,tempAN.size()),8)){
                         //todo login stuffs;
+                        if(tempAN.find("C") == 0)
+                        {
+                            //Jay's Part
+                        }
+                        else if(tempAN.find("M") == 0)
+                        {
+                            //Sahej's part
+                            // for(int i = 0; i < savingsAccounts.size(); i++)
+                            // {
+                            //     if(tempAN == savingsAccounts[i].getAccountNumber())
+                            //     {
+
+                            //     }
+                            // }
+                        }
                     }
                     else{
                         cout<<"Invalid input!"<<endl;
