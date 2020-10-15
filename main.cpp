@@ -14,17 +14,22 @@ bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
 
-void getTime();
+
 
 //structure to handle date comparision
 struct Date{
     int d,m,y;
 };
 
+vector <Date> getTime(vector <Date> dates);
+
 const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 vector <Bank> accounts; //maybe well use it probs not tho 
 vector <Checking> checkingAccounts;
 vector <Savings> savingsAccounts;
+
+
+
 
 
 int main(){
@@ -35,22 +40,25 @@ int main(){
     //readFile function needs to be called first
     while(play){
         //cout<<getRandomAccountNum()<<endl;
-        //cout<<"Version 1.?"<<endl;
-        cout<<"Welcome to the bank account system, would you like to: "<<'\n'<<"[1] Open an account"<<'\n'<<"[2] Login"<<'\n'<<"[3] exit"<<
-        '\n';
+        
+        cout<<"Welcome to the bank account system, would you like to"<<'\n'<<"[1] Open an account"<<'\n'<<"[2] Login"<<'\n'<<
+        "[3] exit: "<<'\n';
         cin >> choice;
         //got rid of the test checking objects - Mike
         
-        if (choice==1||choice==2||choice==3){
-            switch(choice){
+        if (choice==1||choice==2||choice==3)
+        {
+            switch(choice)
+            {
                 case 1:
-                    createAccounts();               //case 1 works (Sahej)
+                    createAccounts();
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
                     cin.ignore();
                     cin>>tempAN;
-                    //if(allDigits(tempAN.substr(1,tempAN.size()),8)){
+                    //if(allDigits(tempAN.substr(1,tempAN.size()),8))
+                    //{
                         //todo login stuffs;
                         if(tempAN.find("C") == 0)
                         {
@@ -72,35 +80,38 @@ int main(){
                                 {
                                     int choice;
                                     bool run = true;
-                                    cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n';
-                                    cin>>choice;
-                                    if(choice==1||choice==2||choice==3)
+                                    while(run)
                                     {
-                                        while(run)
+                                        cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
+                                        "[4] Go back"<<'\n';
+                                        cin>>choice;
+                                        if(choice==1||choice==2||choice==3||choice==4)
                                         {
                                             switch (choice)
                                             {
                                             case 1:
-                                                int depAmt;                                     //Amount the user wants to deposit
+                                                double depAmt;                                     //Amount the user wants to deposit
                                                 cout<<"How much would you like to deposit?"<<'\n';
                                                 cin>>depAmt;
                                                 savingsAccounts[i].deposit(depAmt);
                                                 break;
                                             case 2:
-                                                int widAmt;                                     //amount the user wants to widthdraw
+                                                double widAmt;                                     //amount the user wants to widthdraw
                                                 cout<<"How much would you like to widthdraw?";
                                                 cin>>widAmt;
                                                 savingsAccounts[i].withdraw(widAmt);
                                                 break;
                                             case 3:
                                                 cout<<"Your Account Balance is: "<<savingsAccounts[i].getAccountBalance()<<endl;
+                                                break;
+                                            case 4:
                                                 run = false;
                                                 break;
-
                                             }
                                         
                                         }
                                     }
+                                    
                                 }
                             }
                         }
@@ -109,13 +120,15 @@ int main(){
                     //     cout<<"Invalid input!"<<endl;
                     //     play=true;
                     //     break;
-                    // }
+                    //}
                 case 3:
-                    play = false;
+                    cout<<"Goodbye!"<<endl;
+                    play=false;
                     break;
             }
         }
-        else{
+        else
+        {
             cout<<"Invalid Input!";
             play=true;
             break;
@@ -156,7 +169,7 @@ bool allDigits(string str, int len)
     return true; 
 } 
 
-void createAccounts(){                      //function works (Sahej)
+void createAccounts(){
     Checking tempChecking;
     Savings tempSavings;
     string tempAccountNum=getRandomAccountNum();
@@ -175,7 +188,7 @@ void createAccounts(){                      //function works (Sahej)
         else
         {
             
-            cout<<"Please enter a minimum of $50, would you like to enter another amount (y/n): ";
+            cout<<'\n'<<"Please enter a minimum of $50, would you like to enter another amount (y/n): "<<'\n';
             cin>>keepRunning;
 
         }
@@ -185,16 +198,17 @@ void createAccounts(){                      //function works (Sahej)
         cout<<"Sorry cannot open account with less that $50 initial deposit for Savings Account"<<endl;
         return;
     }
-    cout<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
+    cout<<'\n'<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
     tempChecking.setAccountNumber('C' + tempAccountNum);
     tempSavings.setAccountNumber('S' + tempAccountNum);
     checkingAccounts.push_back(tempChecking);
     savingsAccounts.push_back(tempSavings);
+    cout<<tempSavings.getStatus()<<endl;
 }
 
 string getRandomAccountNum(){
     int max = 99999999;
-    int min = 11111111;
+    int min = 10000000;
     int output = min + (rand() % static_cast<int>(max - min + 1));
     string ranNum=to_string(output);
     return ranNum;
@@ -206,11 +220,9 @@ string getRandomAccountNum(){
 
 
 
-void getTime(){
+vector <Date> getTime(vector <Date> dates){
     time_t now = time(0);
-
-    cout << "Number of sec since January 1,1970:" << now << endl;
-
+    
     tm *ltm = localtime(&now);
     int year= 1900 + ltm->tm_year;
     int month= 1 + ltm->tm_mon;
