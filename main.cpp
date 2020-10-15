@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void createNewAccount();
+void createAccounts();
 bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
@@ -40,20 +40,25 @@ int main(){
     //readFile function needs to be called first
     while(play){
         //cout<<getRandomAccountNum()<<endl;
-        cout<<"Version 1.?"<<endl;
-        cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
+        
+        cout<<"Welcome to the bank account system, would you like to"<<'\n'<<"[1] Open an account"<<'\n'<<"[2] Login"<<'\n'<<
+        "[3] exit: "<<'\n';
         cin >> choice;
         //got rid of the test checking objects - Mike
         
-        if (choice==1||choice==2||choice==3){
-            switch(choice){
+        if (choice==1||choice==2||choice==3)
+        {
+            switch(choice)
+            {
                 case 1:
-                    
+                    createAccounts();
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
+                    cin.ignore();
                     cin>>tempAN;
-                    if(allDigits(tempAN.substr(1,tempAN.size()),8)){
+                    //if(allDigits(tempAN.substr(1,tempAN.size()),8))
+                    //{
                         //todo login stuffs;
                         if(tempAN.find("C") == 0)
                         {
@@ -115,14 +120,15 @@ int main(){
                     //     cout<<"Invalid input!"<<endl;
                     //     play=true;
                     //     break;
-                    // }
+                    //}
                 case 3:
                     cout<<"Goodbye!"<<endl;
                     play=false;
                     break;
             }
         }
-        else{
+        else
+        {
             cout<<"Invalid Input!";
             play=true;
             break;
