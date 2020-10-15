@@ -55,7 +55,7 @@ int main(){
                             //Jay's Part
                             for (int i = 0; i < checkingAccounts.size(); i++)
                             {
-                                if (tempAN == checkingAccounts[i].getAccountNumber())
+                                if (tempAN == checkingAccounts[i].getAccountNumber()){}
                             }
                         }
                         else if(tempAN.find("M") == 0)

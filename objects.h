@@ -112,12 +112,13 @@ public:
     {
         flag = 'L';
     }
-    
+
     //Second constructor. Assigning checking parameters to bank parameters
     Checking(string checkingNum, double checkingBalance, bool checkingStat, double checkingInterest, double checkingAnnualService) 
     : Bank(checkingNum, checkingBalance, checkingStat, checkingInterest, checkingAnnualService)
-   
-
+    {
+        flag = 'L';
+    }
     //accessor to flag and accntnumber
     char getFlag()
     {
