@@ -128,12 +128,12 @@ public:
     //withdraw function
     double withdraw(double amount)
     {
-        double fundCharge = 25.0;
+        double fundCharge = -25.0;
         if (open)
         {
             if (accountBalance - amount < 0)   //if the withdrawal amount will cause a negative, just deduct the $25 fundCharge from the balance.
             {
-                accountBalance -= fundCharge;
+                accountBalance += fundCharge;
                 flag = 'H';   //assign flag as highrisk
                 accountNumber = accountNumber + "*";   //high risk account indicator
             }
