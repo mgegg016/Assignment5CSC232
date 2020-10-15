@@ -181,7 +181,7 @@ class Savings : public Bank{
     public:
         Savings() : Bank()
         {
-            if(accountBalance > 50)
+            if(accountBalance >= 50)
                 status = "Active";
             else 
                 status = "Inactive";
