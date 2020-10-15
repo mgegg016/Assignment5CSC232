@@ -27,9 +27,6 @@ vector <Checking> checkingAccounts;
 vector <Savings> savingsAccounts;
 
 
-
-
-
 int main(){
     bool play = true;
     int choice;
@@ -56,6 +53,10 @@ int main(){
                         if(tempAN.find("C") == 0)
                         {
                             //Jay's Part
+                            for (int i = 0; i < checkingAccounts.size(); i++)
+                            {
+                                if (tempAN == checkingAccounts[i].getAccountNumber())
+                            }
                         }
                         else if(tempAN.find("M") == 0)
                         {
