@@ -5,37 +5,44 @@
 #include <iostream>
 #include <vector>
 #include <istream>
+#include <ctime>
 
 using namespace std;
 
 void createNewAccount();
 bool allDigits(string s, int len);
 bool isDigit(char c);
-void getRandomAcoountNum();
+string getRandomAccountNum();
 
-int locker=0; //variable to lock in which 
+void getTime();
 
-vector <Bank> accounts;
+//structure to handle date comparision
+struct Date{
+    int d,m,y;
+};
+
+const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+vector <Bank> accounts; //maybe well use it probs not tho 
 vector <Checking> checkingAccounts;
+vector <Savings> savingsAccounts;
+
+
+
+
+
 int main(){
     bool play = true;
     int choice;
     string tempAN;
     Bank tempAccount;
     //readFile function needs to be called first
-    //v1.6
-    //jay test
     while(play){
         //cout<<getRandomAccountNum()<<endl;
-        cout<<"Version 1.7"<<endl;
+        cout<<"Version 1.?"<<endl;
         cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
         cin >> choice;
-        Checking c1;
-        Checking c2;
-        Checking c3;
-        Checking c4;
+        //got rid of the test checking objects - Mike
         
-        cout<<c1.getAccntNumber()<<endl;
         if (choice==1||choice==2||choice==3){
             switch(choice){
                 case 1:
@@ -97,15 +104,41 @@ bool allDigits(string str, int len)
 
 void createAccounts(){
     Checking tempChecking;
-    //Saving tempSaving;
+    Savings tempSavings;
+    string tempAccountNum=getRandomAccountNum();
+    tempChecking.setAccountNumber(tempAccountNum);
+    tempSavings.setAccountNumber(tempAccountNum);
+    checkingAccounts.push_back(tempChecking);
+
 
 
 }
 
-int getRandomAccountNum(){
+string getRandomAccountNum(){
     int max = 99999999;
     int min = 10000000;
     int output = min + (rand() % static_cast<int>(max - min + 1));
-    return output;
+    string ranNum=to_string(output);
+    return ranNum;
 
 }
+
+
+//From here down its functions relating to getting the time and comparing the time for interest rates and 
+
+
+
+void getTime(){
+    time_t now = time(0);
+
+    cout << "Number of sec since January 1,1970:" << now << endl;
+
+    tm *ltm = localtime(&now);
+    int year= 1900 + ltm->tm_year;
+    int month= 1 + ltm->tm_mon;
+    int date= ltm->tm_mday;
+
+
+
+}
+
