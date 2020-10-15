@@ -26,16 +26,13 @@ int main(){
     //v1.6
     //jay test
     while(play){
-        //cout<<getRandomAccountNum()<<endl;
+        cout<<getRandomAccountNum()<<endl;
         cout<<"Version 1.7"<<endl;
         cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
         cin >> choice;
         Checking c1;
-        Checking c2;
-        Checking c3;
-        Checking c4;
-        
         cout<<c1.getAccntNumber()<<endl;
+        cout<<"Sahej is a lil bitch";
         if (choice==1||choice==2||choice==3){
             switch(choice){
                 case 1:
@@ -104,7 +101,7 @@ void createAccounts(){
 
 int getRandomAccountNum(){
     int max = 99999999;
-    int min = 10000000;
+    int min = 11111111;
     int output = min + (rand() % static_cast<int>(max - min + 1));
     return output;
 
