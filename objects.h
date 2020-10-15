@@ -25,7 +25,7 @@ public:
     //getters
     string getAccountNumber() {
         return accountNumber;
-    }
+    } 
     double getAccountBalance() {
         return accountBalance;
     }
@@ -90,7 +90,8 @@ public:
         •Balance = Balance + Daily Interest */
         double dailyInterestRate = annualInterestRate / 365;
         double dailyInterest = accountBalance * dailyInterestRate;
-        return accountBalance + dailyInterest;
+        accountBalance += dailyInterest;
+        return accountBalance;
     }
 
     virtual void closeAcc()
