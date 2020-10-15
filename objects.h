@@ -119,15 +119,12 @@ public:
     {
         flag = 'L';
     }
-   
-
     //accessor to flag and accntnumber
     char getFlag()
     {
         return flag;
     }
-
-
+    
     //withdraw function
     double withdraw(double amount)
     {
