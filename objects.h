@@ -227,12 +227,15 @@ class Savings : public Bank{
                 {
                     accountBalance-=amount;
                     cout<<"withdraw successful! Current Balance: "<< accountBalance;
-                    if(accountBalance < 50)
+                    if(accountBalance < 50 && accountBalance >= 1)
                     {
                         status = "Inactive";
                         accountBalance = accountBalance - serviceCharge; //adds a service charge with
                     }
-                            
+                    else if(accountBalance < 1)
+                    {
+                        closeAcc();
+                    }
                 }
             }
             else
@@ -258,4 +261,6 @@ class Savings : public Bank{
             }
             return accountBalance;
         }
+
+
 };
