@@ -183,7 +183,7 @@ class Savings : public Bank{
         {
             if(accountBalance >= 50)
                 status = "Active";
-            else 
+            else if(accountBalance < 50)
                 status = "Inactive";
         }
         //returns the status
@@ -198,11 +198,6 @@ class Savings : public Bank{
             status = s;
         }
 
-        void setServiceCharge()      //Sets the service charge value to 5
-        {
-            serviceCharge = 5;
-        }
-
         void setInterestRate(double aI) 
         {
             if(aI < 10 || aI > 0.1)
@@ -213,7 +208,7 @@ class Savings : public Bank{
 
         double withdraw(double amount)
         {
-            if(!open)
+            if(open)
             {
                 if(status == "Active")  //override part to check the status 
                 {
@@ -221,25 +216,32 @@ class Savings : public Bank{
                     {
                         cout<<"withdraw unsuccessful, insufficient amount!";
                     }
+                    else
+                    {
+                        accountBalance-=amount;
+                        cout<<"withdraw successful! Current Balance: "<< accountBalance<<'\n';
+                        if(accountBalance < 50)
+                        {
+                            status = "Inactive";
+                            serviceCharge = 5;
+                            accountBalance = accountBalance - serviceCharge;
+                            //cout<<accountBalance<<endl; //adds a service charge with
+                        }
+                        if(accountBalance < 1)
+                        {
+                            closeAcc();
+                        }
+                    }
+                    
                 }
                 else
                 {
-                    accountBalance-=amount;
-                    cout<<"withdraw successful! Current Balance: "<< accountBalance;
-                    if(accountBalance < 50 && accountBalance >= 1)
-                    {
-                        status = "Inactive";
-                        accountBalance = accountBalance - serviceCharge; //adds a service charge with
-                    }
-                    else if(accountBalance < 1)
-                    {
-                        closeAcc();
-                    }
+                   cout<<"Account Balance less than $50, cannot withdraw from Savings Account"<<endl;
                 }
             }
             else
             {
-                cout<<"Account Balance less than $50, cannot withdraw from Savings Account"<<endl;
+                cout<<"Account not open, cannot withdraw at this time"<<endl;
             }
 
             return accountBalance;
@@ -249,8 +251,8 @@ class Savings : public Bank{
             if(open)
             {
                 accountBalance = accountBalance + amount;
-                cout<<"Deposit successful! Current balance: "<< accountBalance;
-                if(accountBalance > 50)
+                cout<<"Deposit successful! Current balance: "<< accountBalance<<'\n';
+                if(accountBalance >= 50)
                 {
                     status = "Active";
                 }
