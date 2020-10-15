@@ -184,7 +184,7 @@ public:
 class Savings : public Bank{
     private:
         string status;                      //a way to see if the account is active or inactive 
-        double serviceCharge = 5;           //if the account is inactive(balance is below 50) a service charge of 5 dollars is applied
+        double serviceCharge;           //if the account is inactive(balance is below 50) a service charge of 5 dollars is applied
     public:
         Savings() : Bank()
         {
@@ -198,10 +198,16 @@ class Savings : public Bank{
         {
             return status;
         }
+
         //sets the Status and checks that the annual intrest rate is not more than 10% or less than .1%
         void setStatus(string s)
         {
             status = s;
+        }
+
+        void setServiceCharge()      //Sets the service charge value to 5
+        {
+            serviceCharge = 5;
         }
 
         void setInterestRate(double aI) 
