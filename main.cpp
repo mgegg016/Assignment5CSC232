@@ -72,35 +72,38 @@ int main(){
                                 {
                                     int choice;
                                     bool run = true;
-                                    cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n';
-                                    cin>>choice;
-                                    if(choice==1||choice==2||choice==3)
+                                    while(run)
                                     {
-                                        while(run)
+                                        cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
+                                        "[4] Go back"<<'\n';
+                                        cin>>choice;
+                                        if(choice==1||choice==2||choice==3||choice==4)
                                         {
                                             switch (choice)
                                             {
                                             case 1:
-                                                int depAmt;                                     //Amount the user wants to deposit
+                                                double depAmt;                                     //Amount the user wants to deposit
                                                 cout<<"How much would you like to deposit?"<<'\n';
                                                 cin>>depAmt;
                                                 savingsAccounts[i].deposit(depAmt);
                                                 break;
                                             case 2:
-                                                int widAmt;                                     //amount the user wants to widthdraw
+                                                double widAmt;                                     //amount the user wants to widthdraw
                                                 cout<<"How much would you like to widthdraw?";
                                                 cin>>widAmt;
                                                 savingsAccounts[i].withdraw(widAmt);
                                                 break;
                                             case 3:
                                                 cout<<"Your Account Balance is: "<<savingsAccounts[i].getAccountBalance()<<endl;
+                                                break;
+                                            case 4:
                                                 run = false;
                                                 break;
-
                                             }
                                         
                                         }
                                     }
+                                    
                                 }
                             }
                         }
@@ -175,7 +178,7 @@ void createAccounts(){                      //function works (Sahej)
         else
         {
             
-            cout<<"Please enter a minimum of $50, would you like to enter another amount (y/n): ";
+            cout<<'\n'<<"Please enter a minimum of $50, would you like to enter another amount (y/n): "<<'\n';
             cin>>keepRunning;
 
         }
@@ -185,11 +188,12 @@ void createAccounts(){                      //function works (Sahej)
         cout<<"Sorry cannot open account with less that $50 initial deposit for Savings Account"<<endl;
         return;
     }
-    cout<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
+    cout<<'\n'<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
     tempChecking.setAccountNumber('C' + tempAccountNum);
     tempSavings.setAccountNumber('S' + tempAccountNum);
     checkingAccounts.push_back(tempChecking);
     savingsAccounts.push_back(tempSavings);
+    cout<<tempSavings.getStatus()<<endl;
 }
 
 string getRandomAccountNum(){
