@@ -38,8 +38,9 @@ int main(){
     //readFile function needs to be called first
     while(play){
         //cout<<getRandomAccountNum()<<endl;
-        cout<<"Version 1.?"<<endl;
-        cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
+        //cout<<"Version 1.?"<<endl;
+        cout<<"Welcome to the bank account system, would you like to: "<<'\n'<<"[1] Open an account"<<'\n'<<"[2] Login"<<'\n'<<"[3] exit"<<
+        '\n';
         cin >> choice;
         //got rid of the test checking objects - Mike
         
@@ -50,30 +51,61 @@ int main(){
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
+                    cin.ignore();
                     cin>>tempAN;
-                    if(allDigits(tempAN.substr(1,tempAN.size()),8)){
+                    //if(allDigits(tempAN.substr(1,tempAN.size()),8)){
                         //todo login stuffs;
                         if(tempAN.find("C") == 0)
                         {
                             //Jay's Part
                         }
-                        else if(tempAN.find("M") == 0)
+                        else if(tempAN.find("S") == 0)
                         {
                             //Sahej's part
-                            // for(int i = 0; i < savingsAccounts.size(); i++)
-                            // {
-                            //     if(tempAN == savingsAccounts[i].getAccountNumber())
-                            //     {
+                            for(int i = 0; i < savingsAccounts.size(); i++)
+                            {
+                                if(tempAN == savingsAccounts[i].getAccountNumber())
+                                {
+                                    int choice;
+                                    bool run = true;
+                                    cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n';
+                                    cin>>choice;
+                                    if(choice==1||choice==2||choice==3)
+                                    {
+                                        while(run)
+                                        {
+                                            switch (choice)
+                                            {
+                                            case 1:
+                                                int depAmt;                                     //Amount the user wants to deposit
+                                                cout<<"How much would you like to deposit?"<<'\n';
+                                                cin>>depAmt;
+                                                savingsAccounts[i].deposit(depAmt);
+                                                break;
+                                            case 2:
+                                                int widAmt;                                     //amount the user wants to widthdraw
+                                                cout<<"How much would you like to widthdraw?";
+                                                cin>>widAmt;
+                                                savingsAccounts[i].withdraw(widAmt);
+                                                break;
+                                            case 3:
+                                                cout<<"Your Account Balance is: "<<savingsAccounts[i].getAccountBalance()<<endl;
+                                                run = false;
+                                                break;
 
-                            //     }
-                            // }
+                                            }
+                                        
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    }
-                    else{
-                        cout<<"Invalid input!"<<endl;
-                        play=true;
-                        break;
-                    }
+                    // }
+                    // else{
+                    //     cout<<"Invalid input!"<<endl;
+                    //     play=true;
+                    //     break;
+                    // }
                 case 3:
                     play = false;
                     break;
@@ -124,6 +156,32 @@ void createAccounts(){                      //function works (Sahej)
     Checking tempChecking;
     Savings tempSavings;
     string tempAccountNum=getRandomAccountNum();
+    int intDep;
+    char keepRunning;
+    
+    while (keepRunning != 'n')
+    {
+        cout<<"Please make an intial deposit of at least 50 dollars to activate your Saving account: "<<'\n';
+        cin>>intDep;
+        if(intDep >= 50)
+        {
+            tempSavings.deposit(intDep);
+            break;
+        }
+        else
+        {
+            
+            cout<<"Please enter a minimum of $50, would you like to enter another amount (y/n): ";
+            cin>>keepRunning;
+
+        }
+    }
+    if(keepRunning == 'n')
+    {
+        cout<<"Sorry cannot open account with less that $50 initial deposit for Savings Account"<<endl;
+        return;
+    }
+    cout<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
     tempChecking.setAccountNumber('C' + tempAccountNum);
     tempSavings.setAccountNumber('S' + tempAccountNum);
     checkingAccounts.push_back(tempChecking);
