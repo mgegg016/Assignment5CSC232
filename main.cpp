@@ -9,22 +9,27 @@
 
 using namespace std;
 
-void createAccounts();
+void createNewAccount();
 bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
 
-void getTime();
+
 
 //structure to handle date comparision
 struct Date{
     int d,m,y;
 };
 
+vector <Date> getTime(vector <Date> dates);
+
 const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 vector <Bank> accounts; //maybe well use it probs not tho 
 vector <Checking> checkingAccounts;
 vector <Savings> savingsAccounts;
+
+
+
 
 
 int main(){
@@ -35,22 +40,20 @@ int main(){
     //readFile function needs to be called first
     while(play){
         //cout<<getRandomAccountNum()<<endl;
-        //cout<<"Version 1.?"<<endl;
-        cout<<"Welcome to the bank account system, would you like to: "<<'\n'<<"[1] Open an account"<<'\n'<<"[2] Login"<<'\n'<<"[3] exit"<<
-        '\n';
+        cout<<"Version 1.?"<<endl;
+        cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
         cin >> choice;
         //got rid of the test checking objects - Mike
         
         if (choice==1||choice==2||choice==3){
             switch(choice){
                 case 1:
-                    createAccounts();               //case 1 works (Sahej)
+                    
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
-                    cin.ignore();
                     cin>>tempAN;
-                    //if(allDigits(tempAN.substr(1,tempAN.size()),8)){
+                    if(allDigits(tempAN.substr(1,tempAN.size()),8)){
                         //todo login stuffs;
                         if(tempAN.find("C") == 0)
                         {
@@ -111,7 +114,8 @@ int main(){
                     //     break;
                     // }
                 case 3:
-                    play = false;
+                    cout<<"Goodbye!"<<endl;
+                    play=false;
                     break;
             }
         }
@@ -156,45 +160,21 @@ bool allDigits(string str, int len)
     return true; 
 } 
 
-void createAccounts(){                      //function works (Sahej)
+void createAccounts(){
     Checking tempChecking;
     Savings tempSavings;
     string tempAccountNum=getRandomAccountNum();
-    int intDep;
-    char keepRunning;
-    
-    while (keepRunning != 'n')
-    {
-        cout<<"Please make an intial deposit of at least 50 dollars to activate your Saving account: "<<'\n';
-        cin>>intDep;
-        if(intDep >= 50)
-        {
-            tempSavings.deposit(intDep);
-            break;
-        }
-        else
-        {
-            
-            cout<<"Please enter a minimum of $50, would you like to enter another amount (y/n): ";
-            cin>>keepRunning;
-
-        }
-    }
-    if(keepRunning == 'n')
-    {
-        cout<<"Sorry cannot open account with less that $50 initial deposit for Savings Account"<<endl;
-        return;
-    }
-    cout<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
-    tempChecking.setAccountNumber('C' + tempAccountNum);
-    tempSavings.setAccountNumber('S' + tempAccountNum);
+    tempChecking.setAccountNumber(tempAccountNum);
+    tempSavings.setAccountNumber(tempAccountNum);
     checkingAccounts.push_back(tempChecking);
-    savingsAccounts.push_back(tempSavings);
+
+
+
 }
 
 string getRandomAccountNum(){
     int max = 99999999;
-    int min = 11111111;
+    int min = 10000000;
     int output = min + (rand() % static_cast<int>(max - min + 1));
     string ranNum=to_string(output);
     return ranNum;
@@ -206,11 +186,9 @@ string getRandomAccountNum(){
 
 
 
-void getTime(){
+vector <Date> getTime(vector <Date> dates){
     time_t now = time(0);
-
-    cout << "Number of sec since January 1,1970:" << now << endl;
-
+    
     tm *ltm = localtime(&now);
     int year= 1900 + ltm->tm_year;
     int month= 1 + ltm->tm_mon;
