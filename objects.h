@@ -113,6 +113,12 @@ public:
         flag = "L";
     }
     
+    //function to set flag variable
+    void setFlag(string f)
+    {
+        flag = f;
+    }
+    
     //accessor to flag
     string getFlag()
     {
