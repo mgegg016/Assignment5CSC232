@@ -104,23 +104,17 @@ public:
 class Checking : public Bank
 {
 private:
-    char flag;
+    string flag;
 
 public:
     //Default constructor
     Checking() : Bank()
     {
-        flag = 'L';
+        flag = "L";
     }
     
-    //Second constructor. Assigning checking parameters to bank parameters
-    Checking(string checkingNum, double checkingBalance, bool checkingStat, double checkingInterest, double checkingAnnualService) 
-    : Bank(checkingNum, checkingBalance, checkingStat, checkingInterest, checkingAnnualService)
-    {
-        flag = 'L';
-    }
-    //accessor to flag and accntnumber
-    char getFlag()
+    //accessor to flag
+    string getFlag()
     {
         return flag;
     }
@@ -134,7 +128,7 @@ public:
             if (accountBalance - amount < 0)   //if the withdrawal amount will cause a negative, just deduct the $25 fundCharge from the balance.
             {
                 accountBalance += fundCharge;
-                flag = 'H';   //assign flag as highrisk
+                flag = "H";   //assign flag as highrisk
                 accountNumber = accountNumber + "*";   //high risk account indicator
             }
             else
@@ -155,7 +149,7 @@ public:
         {
             if (amount > 9999.0)   //if the single deposit is more that 9999, flag it as a high risk account then add asterik to indicate.
             {
-            flag = 'H';
+            flag = "H";
             accountNumber = accountNumber + "*";
             accountBalance += amount;
             }
