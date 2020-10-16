@@ -16,6 +16,7 @@ bool isDigit(char c);
 string getRandomAccountNum();
 void readSavingsFile();
 void updateSavingsFile();
+void loginCheckingsAcc(string);
 void loginSavingsAcc(string);
 
 
@@ -39,9 +40,6 @@ vector <Savings> savingsAccounts;
 int main(){
 
     readSavingsFile();
-    cout<<savingsAccounts[0].getAccountNumber()<<" "<<savingsAccounts[0].getAccountBalance()<<" "<<
-    savingsAccounts[0].getOpenStatus()<<" "<<savingsAccounts[0].getStatus()<<endl;
-
     bool play = true;
     int choice;
     string tempAN;
@@ -73,13 +71,7 @@ int main(){
                         if(tempAN.find("C") == 0)
                         {
                             //Jay's Part
-                            for (int i = 0; i < checkingAccounts.size(); i++)
-                            {
-                                if (tempAN == checkingAccounts[i].getAccountNumber())
-                                {
-                                 //suck   
-                                }
-                            }
+                            loginCheckingsAcc(tempAN);
                         }
                         else if(tempAN.find("S") == 0)
                         {
@@ -185,10 +177,6 @@ void createAccounts(){
     checkingAccounts.push_back(tempChecking);
     savingsAccounts.push_back(tempSavings);
 
-    for(int i=0; i < savingsAccounts.size(); i++)
-    {
-        cout<<savingsAccounts[i].getAccountNumber()<<endl;
-    }
 }
 
 string getRandomAccountNum(){
@@ -217,7 +205,55 @@ vector <Date> getTime(vector <Date> dates){
 
 }
 
-//The functions allows the program to login to savings accounts (Sahej)
+void loginCheckingsAcc(string tempAN)
+{
+    for (int i = 0; i < checkingAccounts.size(); i++)
+    {
+        if (tempAN == checkingAccounts[i].getAccountNumber())
+        {
+            cout << "...." << endl;
+            int selection;
+            cout << "[1] Deposit" << "\n[2] Withdraw" << "\n[3] Check Balance" << "\n[4] Go Back \n: ";
+            cin >> selection;
+            if (selection == 1 )
+            {
+                double depAmount;
+                cout << "Enter deposit amount: ";
+                cin >> depAmount;
+                checkingAccounts[i].deposit(depAmount);
+                break;
+            }
+            else if (selection == 2)
+            {
+                double withAmount;
+                cout << "Enter withdraw amount: ";
+                cin >> withAmount;
+                checkingAccounts[i].withdraw(withAmount);
+                break;
+            }
+            else if (selection == 3)
+            {
+                cout << "Your balance is: " << checkingAccounts[i].getAccountBalance() << endl;
+                break;
+            }
+            else if (selection == 4)
+            {
+                break;
+            }
+            else
+            {
+                cout << "invalid input" << endl;
+                break;
+            }
+        }
+        else
+        {
+            continue;
+            //cout << "Enter valid account number" << endl;  
+        }
+    }
+}
+
 void loginSavingsAcc(string tempAN)
 {
     bool present;
