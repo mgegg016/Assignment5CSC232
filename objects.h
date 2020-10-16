@@ -62,7 +62,7 @@ public:
         annualService = aS;
     }
 
-    void setLastDate(string d){
+    void setDate(string d){
         lastDate=d;
     }
 
