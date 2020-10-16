@@ -13,6 +13,7 @@ void createAccounts();
 bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
+void loginSavingsAcc(string);
 
 
 
@@ -74,52 +75,7 @@ int main(){
                         else if(tempAN.find("S") == 0)
                         {
                             //Sahej's part
-                            for(int i = 0; i < savingsAccounts.size(); i++)
-                            {
-                                if(tempAN == savingsAccounts[i].getAccountNumber())
-                                {
-                                    int choice;
-                                    bool run = true;
-                                    while(run)
-                                    {
-                                        cout<<'\n'<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
-                                        "[4] Go back"<<'\n';
-                                        cin>>choice;
-                                        if(choice==1||choice==2||choice==3||choice==4)
-                                        {
-                                            switch (choice)
-                                            {
-                                            case 1:
-                                                double depAmt;                                     //Amount the user wants to deposit
-                                                cout<<"How much would you like to deposit?"<<'\n';
-                                                cin>>depAmt;
-                                                savingsAccounts[i].deposit(depAmt);
-                                                break;
-                                            case 2:
-                                                double widAmt;                                     //amount the user wants to widthdraw
-                                                cout<<"How much would you like to widthdraw?";
-                                                cin>>widAmt;
-                                                savingsAccounts[i].withdraw(widAmt);
-                                                break;
-                                            case 3:
-                                                cout<<"Your Account Balance is: "<<savingsAccounts[i].getAccountBalance()<<endl;
-                                                break;
-                                            case 4:
-                                                run = false;
-                                                break;
-                                            }
-                                        
-                                        }
-                                    }
-                                    
-                                }
-                                else
-                                {
-                                    cout<<"Account not Found, try again"<<endl;
-                                    continue;
-                                }
-    
-                            }
+                            loginSavingsAcc(tempAN);
                         }
                         break;
                     // }
@@ -237,5 +193,55 @@ vector <Date> getTime(vector <Date> dates){
 
 
 
+}
+
+void loginSavingsAcc(string tempAN)
+{
+    for(int i = 0; i < savingsAccounts.size(); i++)
+    {
+        if(tempAN == savingsAccounts[i].getAccountNumber())
+        {
+            int choice;
+            bool run = true;
+            while(run)
+            {
+                cout<<'\n'<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
+                "[4] Go back"<<'\n';
+                cin>>choice;
+                if(choice==1||choice==2||choice==3||choice==4)
+                {
+                    switch (choice)
+                    {
+                        case 1:
+                            double depAmt;                                     //Amount the user wants to deposit
+                            cout<<"How much would you like to deposit?"<<'\n';
+                            cin>>depAmt;
+                            savingsAccounts[i].deposit(depAmt);
+                            break;
+                        case 2:
+                            double widAmt;                                     //amount the user wants to widthdraw
+                            cout<<"How much would you like to widthdraw?";
+                            cin>>widAmt;
+                            savingsAccounts[i].withdraw(widAmt);
+                            break;
+                        case 3:
+                            cout<<"Your Account Balance is: "<<savingsAccounts[i].getAccountBalance()<<endl;
+                            break;
+                        case 4:
+                            run = false;
+                            break;
+                    }
+                                        
+                }
+            }
+                                    
+        }
+        else
+        {
+            cout<<"Account not Found, try again"<<endl;
+            continue;
+        }
+    
+    }
 }
 
