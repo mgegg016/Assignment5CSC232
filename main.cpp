@@ -82,7 +82,7 @@ int main(){
                                     bool run = true;
                                     while(run)
                                     {
-                                        cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
+                                        cout<<'\n'<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
                                         "[4] Go back"<<'\n';
                                         cin>>choice;
                                         if(choice==1||choice==2||choice==3||choice==4)
@@ -113,8 +113,15 @@ int main(){
                                     }
                                     
                                 }
+                                else
+                                {
+                                    cout<<"Account not Found, try again"<<endl;
+                                    continue;
+                                }
+    
                             }
                         }
+                        break;
                     // }
                     // else{
                     //     cout<<"Invalid input!"<<endl;
