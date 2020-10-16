@@ -10,10 +10,11 @@ protected:
     bool open; //bool to see if the account is open or not
     double annualInterestRate;
     double annualService;
+    string lastDate;
 
 public:
     //contructor
-    Bank(string aN = "00000000", double aB = 0.0, bool o = true, double aI = 0.0, double aS = 0.0) {
+    Bank(string aN = "00000000", double aB = 0.0, bool o = true, double aI = 0.0, double aS = 0.0, string d= "d 0 0 0000") {
         //default Number is 0000000, account Balance is 0, its closed, 0.0 interest rate, 0.0 annual charge
         //it starts at a low risk, it has N for none account type, and 0 annual service charge.
         accountNumber = aN;
@@ -21,6 +22,7 @@ public:
         open = o;
         annualInterestRate = aI;
         annualService = aS;
+        lastDate = d;
     }
     //getters
     string getAccountNumber() {
@@ -39,6 +41,10 @@ public:
         return annualService;
     }
 
+    string getDate(){
+        return lastDate;
+    }
+
     //setters
     void setAccountNumber(string aN) {
         accountNumber = aN;
@@ -55,6 +61,11 @@ public:
     void setService(double aS) {
         annualService = aS;
     }
+
+    void setLastDate(string d){
+        lastDate=d;
+    }
+
 
     virtual double withdraw(double amount) {
         if (open) {

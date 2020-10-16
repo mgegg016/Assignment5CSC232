@@ -4,8 +4,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <istream>
+#include <fstream>
 #include <ctime>
+#include <sstream>
+
 
 using namespace std;
 
@@ -21,8 +23,8 @@ struct Date{
     int d,m,y;
 };
 
-vector <Date> getTime(vector <Date> dates);
-
+Date getCurrentTime();
+Date getOldTime(string file);
 const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 vector <Bank> accounts; //maybe well use it probs not tho 
 vector <Checking> checkingAccounts;
@@ -48,7 +50,6 @@ int main(){
         if (choice==1||choice==2||choice==3){
             switch(choice){
                 case 1:
-                    
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
@@ -109,7 +110,9 @@ int main(){
                                     
                                 }
                             }
+                     
                         }
+                    }
                     // }
                     // else{
                     //     cout<<"Invalid input!"<<endl;
@@ -214,15 +217,49 @@ string getRandomAccountNum(){
 
 
 
-vector <Date> getTime(vector <Date> dates){
+Date getCurrentTime(){
     time_t now = time(0);
-    
+    Date tempDate;
+    vector <Date> storedDates;
     tm *ltm = localtime(&now);
     int year= 1900 + ltm->tm_year;
     int month= 1 + ltm->tm_mon;
     int date= ltm->tm_mday;
+    tempDate.y=year;
 
 
-
+    return tempDate;
 }
 
+Date getOldTime(string file){
+    Date tempDate;
+    string text;
+    string line;
+    ifstream inFile(file);
+    vector <string> splitLine;
+
+    const char delim =' ';
+
+    if(!inFile){
+        cout<<"Cannot find the file. . ."<<endl;
+    }
+    else{
+        while(getline(inFile,text)){
+            if(text.at(0)=='d'){
+                line=text;
+            }
+            else{
+                cout<<"date line not found. . .";
+            }
+        }
+        stringstream ss(line);//stringstream to work with getline
+        string s;//temp local string variable
+        while(getline(ss, s, delim)){
+            splitLine.push_back(s);
+        }
+        
+    }
+
+
+    return tempDate;
+}
