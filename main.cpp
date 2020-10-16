@@ -13,6 +13,7 @@ void createAccounts();
 bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
+void loginCheckingsAcc(string);
 void loginSavingsAcc(string);
 
 
@@ -64,13 +65,7 @@ int main(){
                         if(tempAN.find("C") == 0)
                         {
                             //Jay's Part
-                            for (int i = 0; i < checkingAccounts.size(); i++)
-                            {
-                                if (tempAN == checkingAccounts[i].getAccountNumber())
-                                {
-                                 //suck   
-                                }
-                            }
+                            loginCheckingsAcc(tempAN);
                         }
                         else if(tempAN.find("S") == 0)
                         {
@@ -85,6 +80,7 @@ int main(){
                     //     break;
                     //}
                 case 3:
+                    //call writing functions
                     cout<<"Goodbye!"<<endl;
                     play=false;
                     break;
@@ -193,6 +189,55 @@ vector <Date> getTime(vector <Date> dates){
 
 
 
+}
+
+void loginCheckingsAcc(string tempAN)
+{
+    for (int i = 0; i < checkingAccounts.size(); i++)
+    {
+        if (tempAN == checkingAccounts[i].getAccountNumber())
+        {
+            cout << "...." << endl;
+            int selection;
+            cout << "[1] Deposit" << "\n[2] Withdraw" << "\n[3] Check Balance" << "\n[4] Go Back \n: ";
+            cin >> selection;
+            if (selection == 1 )
+            {
+                double depAmount;
+                cout << "Enter deposit amount: ";
+                cin >> depAmount;
+                checkingAccounts[i].deposit(depAmount);
+                break;
+            }
+            else if (selection == 2)
+            {
+                double withAmount;
+                cout << "Enter withdraw amount: ";
+                cin >> withAmount;
+                checkingAccounts[i].withdraw(withAmount);
+                break;
+            }
+            else if (selection == 3)
+            {
+                cout << "Your balance is: " << checkingAccounts[i].getAccountBalance() << endl;
+                break;
+            }
+            else if (selection == 4)
+            {
+                break;
+            }
+            else
+            {
+                cout << "invalid input" << endl;
+                break;
+            }
+        }
+        else
+        {
+            continue;
+            //cout << "Enter valid account number" << endl;  
+        }
+    }
 }
 
 void loginSavingsAcc(string tempAN)
