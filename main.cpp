@@ -205,6 +205,7 @@ vector <Date> getTime(vector <Date> dates){
 
 }
 
+//login to ch
 void loginCheckingsAcc(string tempAN)
 {
     for (int i = 0; i < checkingAccounts.size(); i++)
@@ -330,7 +331,6 @@ void readSavingsFile()
                 text = text.substr(text.find(" ") + 1, text.length());
                 currentAccount.setOpenStatus(text.substr(0, text.find(" ")));
                 text = text.substr(text.find(" ") + 1, text.length());
-                cout<<text<<endl;
                 currentAccount.setStatus(text);    
             }
             else
