@@ -1,0 +1,12 @@
+S00000000
+0 false Inactive
+S10016807
+60 true Active
+S22475249
+480 true Active
+S12650073
+-5 false Inactive
+S94943658
+45 true Inactive
+S74108930
+70 true Active
