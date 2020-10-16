@@ -6,6 +6,7 @@
 #include <vector>
 #include <istream>
 #include <ctime>
+#include <fstream>
 
 using namespace std;
 
@@ -13,6 +14,8 @@ void createAccounts();
 bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
+void readSavingsFile();
+void updateSavingsFile();
 void loginSavingsAcc(string);
 
 
@@ -34,10 +37,16 @@ vector <Savings> savingsAccounts;
 
 
 int main(){
+
+    readSavingsFile();
+    cout<<savingsAccounts[0].getAccountNumber()<<" "<<savingsAccounts[0].getAccountBalance()<<" "<<
+    savingsAccounts[0].getOpenStatus()<<" "<<savingsAccounts[0].getStatus()<<endl;
+
     bool play = true;
     int choice;
     string tempAN;
     Bank tempAccount;
+
     //readFile function needs to be called first
     while(play){
         //cout<<getRandomAccountNum()<<endl;
@@ -85,6 +94,7 @@ int main(){
                     //     break;
                     //}
                 case 3:
+                    updateSavingsFile();
                     cout<<"Goodbye!"<<endl;
                     play=false;
                     break;
@@ -136,6 +146,14 @@ void createAccounts(){
     Checking tempChecking;
     Savings tempSavings;
     string tempAccountNum=getRandomAccountNum();
+
+    for(int i = 0; i < savingsAccounts.size(); i++)
+    {
+        if('S' + tempAccountNum == savingsAccounts[i].getAccountNumber())
+        {
+            tempAccountNum=getRandomAccountNum();
+        }
+    }
     int intDep;
     char keepRunning;
     
@@ -166,7 +184,11 @@ void createAccounts(){
     tempSavings.setAccountNumber('S' + tempAccountNum);
     checkingAccounts.push_back(tempChecking);
     savingsAccounts.push_back(tempSavings);
-    cout<<tempSavings.getStatus()<<endl;
+
+    for(int i=0; i < savingsAccounts.size(); i++)
+    {
+        cout<<savingsAccounts[i].getAccountNumber()<<endl;
+    }
 }
 
 string getRandomAccountNum(){
@@ -195,12 +217,15 @@ vector <Date> getTime(vector <Date> dates){
 
 }
 
+//The functions allows the program to login to savings accounts (Sahej)
 void loginSavingsAcc(string tempAN)
 {
+    bool present;
     for(int i = 0; i < savingsAccounts.size(); i++)
     {
         if(tempAN == savingsAccounts[i].getAccountNumber())
         {
+            present = true;
             int choice;
             bool run = true;
             while(run)
@@ -238,10 +263,70 @@ void loginSavingsAcc(string tempAN)
         }
         else
         {
-            cout<<"Account not Found, try again"<<endl;
             continue;
         }
     
     }
+    if(!present)
+        cout<<"Account not found"<<endl;
 }
 
+void readSavingsFile()
+{
+    ifstream inFile;                      //opens the Savings Account File
+    inFile.open("Savings.txt");
+    string text;
+
+
+    if(inFile)
+    {
+        while(getline(inFile, text))
+        {
+            Savings currentAccount;
+
+            if(text.find("S") == 0)
+            {
+                currentAccount.setAccountNumber(text);
+                getline(inFile, text);
+
+                double balance = stod(text.substr(0, text.find(" ")));
+                currentAccount.setAccountBalance(balance);
+                text = text.substr(text.find(" ") + 1, text.length());
+                currentAccount.setOpenStatus(text.substr(0, text.find(" ")));
+                text = text.substr(text.find(" ") + 1, text.length());
+                cout<<text<<endl;
+                currentAccount.setStatus(text);    
+            }
+            else
+            {
+                cout<<"Account not found"<<endl;
+            }
+
+            savingsAccounts.push_back(currentAccount);
+        }
+    }
+    else
+    {
+        {
+            cout<<"File not Found"<<endl;
+        }
+    }
+    
+    inFile.close();
+}
+
+void updateSavingsFile()
+{
+    ofstream outFile;
+    outFile.open("Savings.txt");
+    
+    for(int i = 0; i < savingsAccounts.size(); i++)
+    {
+        outFile<<savingsAccounts[i].getAccountNumber()<<'\n'<<savingsAccounts[i].getAccountBalance()<<" "<<
+        savingsAccounts[i].getOpenStatus()<<" "<<savingsAccounts[i].getStatus()<<endl;
+
+    }
+
+    outFile.close();
+    
+}
