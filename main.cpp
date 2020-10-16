@@ -67,7 +67,7 @@ int main(){
                             {
                                 if (tempAN == checkingAccounts[i].getAccountNumber())
                                 {
-                                    
+                                 //suck   
                                 }
                             }
                         }
