@@ -7,13 +7,13 @@ class Bank {
 protected:
     string accountNumber;
     double accountBalance;
-    bool open; //bool to see if the account is open or not
+    string open; //bool to see if the account is open or not
     double annualInterestRate;
     double annualService;
 
 public:
     //contructor
-    Bank(string aN = "00000000", double aB = 0.0, bool o = true, double aI = 0.0, double aS = 0.0) {
+    Bank(string aN = "00000000", double aB = 0.0, string o = "true", double aI = 0.0, double aS = 0.0) {
         //default Number is 0000000, account Balance is 0, its closed, 0.0 interest rate, 0.0 annual charge
         //it starts at a low risk, it has N for none account type, and 0 annual service charge.
         accountNumber = aN;
@@ -29,7 +29,7 @@ public:
     double getAccountBalance() {
         return accountBalance;
     }
-    bool getOpenStatus() {
+    string getOpenStatus() {
         return open;
     }
     double getInterestRate() {
@@ -46,7 +46,7 @@ public:
     void setAccountBalance(double aB) {
         accountBalance = aB;
     }
-    void setOpenStatus(bool o) {
+    void setOpenStatus(string o) {
         open = o;
     }
     virtual void setInterestRate(double aI) {           //changed to virtual cause Saving accounts over writes
@@ -57,7 +57,7 @@ public:
     }
 
     virtual double withdraw(double amount) {
-        if (open) {
+        if (open == "true") {
             if (amount > accountBalance) {
                 cout << "withdraw unsuccessful, insufficient amount!";
             }
@@ -73,7 +73,7 @@ public:
     }
 
     virtual double deposit(double amount) {
-        if (open) {
+        if (open == "true") {
             accountBalance += amount;
             cout << "Deposit successful! Current balance: " << accountBalance;
         }
@@ -96,7 +96,7 @@ public:
 
     virtual void closeAcc()
     {
-        open = false;
+        open = "false";
     }
 };
 
@@ -114,7 +114,7 @@ public:
     }
     
     //Second constructor. Assigning checking parameters to bank parameters
-    Checking(string checkingNum, double checkingBalance, bool checkingStat, double checkingInterest, double checkingAnnualService) 
+    Checking(string checkingNum, double checkingBalance, string checkingStat, double checkingInterest, double checkingAnnualService) 
     : Bank(checkingNum, checkingBalance, checkingStat, checkingInterest, checkingAnnualService)
     {
         flag = 'L';
@@ -129,7 +129,7 @@ public:
     double withdraw(double amount)
     {
         double fundCharge = 25.0;
-        if (open)
+        if (open == "true")
         {
             if (accountBalance - amount < 0)   //if the withdrawal amount will cause a negative, just deduct the $25 fundCharge from the balance.
             {
@@ -151,7 +151,7 @@ public:
 
     double deposit(double amount)   //a deposit function
     {
-        if(open)
+        if(open == "true")
         {
             if (amount > 9999.0)   //if the single deposit is more that 9999, flag it as a high risk account then add asterik to indicate.
             {
@@ -208,7 +208,7 @@ class Savings : public Bank{
 
         double withdraw(double amount)
         {
-            if(open)
+            if(open == "true")
             {
                 if(status == "Active")  //override part to check the status 
                 {
@@ -248,7 +248,7 @@ class Savings : public Bank{
         }
 
         double deposit(double amount){
-            if(open)
+            if(open == "true")
             {
                 accountBalance = accountBalance + amount;
                 cout<<"Deposit successful! Current balance: "<< accountBalance<<'\n';
