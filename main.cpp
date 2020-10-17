@@ -324,11 +324,6 @@ void loginCheckingsAcc(string tempAN)
     {
         if (tempAN == checkingAccounts[i].getAccountNumber() || tempAN + '*' == checkingAccounts[i].getAccountNumber())
         {
-            double interest=checkingAccounts[i].calcInt(getDifference(getOldTime("checking.txt",tempAN),getCurrentTime()));
-            checkingAccounts[i].setAccountBalance(interest);
-            double serviceFee=checkingAccounts[i].chargeService(getDifference(getOldTime("checking.txt",tempAN),getCurrentTime()));
-            checkingAccounts[i].setAccountBalance(serviceFee);
-
             cout << "......" << endl;
             present = true;
             int selection;
@@ -380,13 +375,12 @@ void loginSavingsAcc(string tempAN)
     {
         if(tempAN == savingsAccounts[i].getAccountNumber())
         {
-            
             present = true;
             int choice;
             bool run = true;
-            cout<<savingsAccounts.size()<<endl;
             double interest=savingsAccounts[i].calcInt(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
             savingsAccounts[i].setAccountBalance(interest);
+            cout<<"completed interest..."<<endl;
             double serviceFee=savingsAccounts[i].chargeService(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
             savingsAccounts[i].setAccountBalance(serviceFee);
 
