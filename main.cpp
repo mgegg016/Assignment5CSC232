@@ -1,4 +1,6 @@
-
+/*
+Jabez Nuetey M03270970, Sahejbir Bhatia M03322916, Mike Gegg
+*/
 
 #include "objects.h"
 #include <string>
@@ -7,15 +9,20 @@
 #include <fstream>
 #include <ctime>
 #include <sstream>
-
+#include <cmath>
 
 using namespace std;
 
-void createNewAccount();
+void createAccounts();
 bool allDigits(string s, int len);
 bool isDigit(char c);
 string getRandomAccountNum();
-
+void readSavingsFile();
+void updateSavingsFile();
+void loginCheckingsAcc(string);
+void loginSavingsAcc(string);
+void readCheckingsFile();
+void updateCheckingsFile();
 
 
 //structure to handle date comparision
@@ -24,7 +31,7 @@ struct Date{
 };
 
 Date getCurrentTime();
-Date getOldTime(string file);
+Date getOldTime(string file,string accountN);
 int getDifference(Date dt1, Date dt2);
 const int monthDays[12]= {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 vector <Bank> accounts; //maybe well use it probs not tho 
@@ -32,105 +39,58 @@ vector <Checking> checkingAccounts;
 vector <Savings> savingsAccounts;
 
 int countLeapYears(Date d);
-
-
+int getInterestAmount(string file, string accountNum);
+int getServiceAmount(string file, string accountNum);
 
 int main(){
+
+    readSavingsFile();
+    readCheckingsFile();
+
     bool play = true;
     int choice;
     string tempAN;
     Bank tempAccount;
-    //readFile function needs to be called first
-    getOldTime("Savings.txt");
     while(play){
-        //cout<<getRandomAccountNum()<<endl;
-        cout<<"Version 2.1"<<endl;
-        cout<<"Welcome to the bank account system, would you like to [1] Open an account, [2] Login, [3] exit: ";
+        //cout<<"Version 2.1"<<endl;
+        cout<<"Welcome to the bank account system, would you like to: \n[1] Open an account\n[2] Login\n[3] exit \n:";
         cin >> choice;
         //got rid of the test checking objects - Mike
         
         if (choice==1||choice==2||choice==3){
             switch(choice){
                 case 1:
+                    createAccounts();
                     break;
                 case 2:
                     cout<<"Enter your account number beginning with the type [C] Checkings [S] Savings: ";
                     cin>>tempAN;
-                    if(allDigits(tempAN.substr(1,tempAN.size()),8)){
+                    // if(allDigits(tempAN.substr(1,tempAN.size()),8)){
                         //todo login stuffs;
                         if(tempAN.find("C") == 0)
                         {
                             //Jay's Part
-                            for (int i = 0; i < checkingAccounts.size(); i++)
-                            {
-                                if (tempAN == checkingAccounts[i].getAccountNumber())
-                                {
-                                    
-                                }
-                            }
+                            loginCheckingsAcc(tempAN);
                         }
                         else if(tempAN.find("S") == 0)
                         {
                             //Sahej's part
-                            for(int i = 0; i < savingsAccounts.size(); i++)
-                            {
-                                if(tempAN == savingsAccounts[i].getAccountNumber())
-                                {
-                                    int choice;
-                                    bool run = true;
-                                    while(run)
-                                    {
-                                        cout<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
-                                        "[4] Go back"<<'\n';
-                                        cin>>choice;
-                                        if(choice==1||choice==2||choice==3||choice==4)
-                                        {
-                                            switch (choice)
-                                            {
-                                            case 1:
-                                                double depAmt;                                     //Amount the user wants to deposit
-                                                cout<<"How much would you like to deposit?"<<'\n';
-                                                cin>>depAmt;
-                                                savingsAccounts[i].deposit(depAmt);
-                                                break;
-                                            case 2:
-                                                double widAmt;                                     //amount the user wants to widthdraw
-                                                cout<<"How much would you like to widthdraw?";
-                                                cin>>widAmt;
-                                                savingsAccounts[i].withdraw(widAmt);
-                                                break;
-                                            case 3:
-                                                cout<<"Your Account Balance is: "<<savingsAccounts[i].getAccountBalance()<<endl;
-                                                break;
-                                            case 4:
-                                                run = false;
-                                                break;
-                                            }
-                                        
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                     
+                            loginSavingsAcc(tempAN);
                         }
-                    }
-                    // }
-                    // else{
-                    //     cout<<"Invalid input!"<<endl;
-                    //     play=true;
-                    //     break;
-                    // }
+                        break;
                 case 3:
+                    updateCheckingsFile();
+                    updateSavingsFile();
+                    
                     cout<<"Goodbye!"<<endl;
                     play=false;
                     break;
             }
         }
         else{
-            cout<<"Invalid Input!";
+            cout<<"Invalid Input!, please choose valid option\n";
             play=true;
-            break;
+            continue;
         }
     }
     
@@ -172,6 +132,21 @@ void createAccounts(){
     Checking tempChecking;
     Savings tempSavings;
     string tempAccountNum=getRandomAccountNum();
+
+    for(int i = 0; i < checkingAccounts.size(); i++)
+    {
+       if('C' + tempAccountNum == checkingAccounts[i].getAccountNumber() || 'C' + tempAccountNum + '*' == checkingAccounts[i].getAccountNumber())
+        {
+            tempAccountNum=getRandomAccountNum();
+        }
+    }
+    for(int i = 0; i < savingsAccounts.size(); i++)
+    {
+        if('S' + tempAccountNum == savingsAccounts[i].getAccountNumber())
+        {
+            tempAccountNum=getRandomAccountNum();
+        }
+    }
     int intDep;
     char keepRunning;
     
@@ -187,8 +162,8 @@ void createAccounts(){
         else
         {
             
-            cout<<'\n'<<"Please enter a minimum of $50, would you like to enter another amount (y/n): "<<'\n';
-            cin>>keepRunning;
+            cout << '\n' << "Please enter a minimum of $50, would you like to enter another amount (y/n): " << '\n';
+            cin >> keepRunning;
 
         }
     }
@@ -197,13 +172,15 @@ void createAccounts(){
         cout<<"Sorry cannot open account with less that $50 initial deposit for Savings Account"<<endl;
         return;
     }
-    cout<<'\n'<<"Your checking account number is: "<<'C'+ tempAccountNum<<" and saving account number is: "<<'S' + tempAccountNum<<endl;
+    cout << '\n' << "Your checking account number is: " << 'C' + tempAccountNum << endl;
+    cout << "Your savings account number is: "<<'S' + tempAccountNum << endl;
     tempChecking.setAccountNumber('C' + tempAccountNum);
     tempSavings.setAccountNumber('S' + tempAccountNum);
     checkingAccounts.push_back(tempChecking);
     savingsAccounts.push_back(tempSavings);
-    cout<<tempSavings.getStatus()<<endl;
+
 }
+
 
 string getRandomAccountNum(){
     int max = 99999999;
@@ -213,6 +190,8 @@ string getRandomAccountNum(){
     return ranNum;
 
 }
+
+//From here down its functions relating to getting the time and comparing the time part of mike geggs stuff
 
 // This function returns number of days between two given 
 // dates 
@@ -242,9 +221,13 @@ int getDifference(Date dt1, Date dt2)
     return (n2 - n1); 
 } 
 
-//From here down its functions relating to getting the time and comparing the time for interest rates and 
-
-
+int stringToInt(string s){
+    int num=0;
+    for(int i=0;i<s.size();i++){
+        num+=(s[i]-48)*pow(10, (s.size()-i-1));
+    }
+    return num;
+}
 
 Date getCurrentTime(){
     time_t now = time(0);
@@ -253,44 +236,55 @@ Date getCurrentTime(){
     tm *ltm = localtime(&now);
     int year= 1900 + ltm->tm_year;
     int month= 1 + ltm->tm_mon;
-    int date= ltm->tm_mday;
+    int day= ltm->tm_mday;
     tempDate.y=year;
+    tempDate.m=month;
+    tempDate.d=day;
 
 
     return tempDate;
 }
 
-Date getOldTime(string file){
+vector <string> splitLines(string line, char delim){
+    stringstream ss(line);//stringstream to work with getline
+    vector <string> splitLine;
+    string s;//temp local string variable
+    while(getline(ss, s, delim)){
+        splitLine.push_back(s);
+    }
+    return splitLine;
+}
+
+Date getOldTime(string file, string accountNum){
     Date tempDate;
     string text;
     string line;
     ifstream inFile(file);
-    vector <string> splitLine;
-
-    const char delim =' ';
-
+    vector <string> lines;
+    vector <string> firstDelimVec;
+    vector <string> secondDelimVec;
+    int lineCount=1;
+    int locker;
     if(!inFile){
         cout<<"Cannot find the file. . ."<<endl;
     }
     else{
         while(getline(inFile,text)){
-            cout<<text<<endl;
-            if(isDigit(text.at(0))){
-                line=text;
+            lines.push_back(text);
+            for(int i=0;i<lines.size();i++){
+                if(lines[i].compare(accountNum)==0){
+                    locker=i+1;
+                }
             }
-            else{
-                cout<<"date line not found. . .";
-            }
+                line=lines[locker];
+                firstDelimVec=splitLines(line,' ');
+                secondDelimVec=splitLines(firstDelimVec[3],'/');            
         }
-        stringstream ss(line);//stringstream to work with getline
-        string s;//temp local string variable
-        while(getline(ss, s, delim)){
-            splitLine.push_back(s);
-        }
-        tempDate.d=stoi(splitLine[4]);
-        tempDate.m=stoi(splitLine[5]);
-        tempDate.y=stoi(splitLine[6]);
-        cout<<"tempDate d= "<<tempDate.d<<endl;
+        tempDate.d=stringToInt(secondDelimVec[1]);
+        tempDate.m=stringToInt(secondDelimVec[2]);
+        tempDate.y=stringToInt(secondDelimVec[3]);
+
+
         
     }
 
@@ -312,6 +306,16 @@ int countLeapYears(Date d)
     return years / 4 - years / 100 + years / 400; 
 } 
 
+string formatDate(Date date){
+    string formattedDate= "d/"+to_string(date.d)+"/"+to_string(date.m)+"/"+to_string(date.y);
+    return formattedDate;
+}
+
+//end of time related function
+
+//functions for interest and service charge
+
+
 
 void loginCheckingsAcc(string tempAN)
 {
@@ -320,6 +324,11 @@ void loginCheckingsAcc(string tempAN)
     {
         if (tempAN == checkingAccounts[i].getAccountNumber() || tempAN + '*' == checkingAccounts[i].getAccountNumber())
         {
+            double interest=checkingAccounts[i].calcInt(getDifference(getOldTime("checking.txt",tempAN),getCurrentTime()));
+            checkingAccounts[i].setAccountBalance(interest);
+            double serviceFee=checkingAccounts[i].chargeService(getDifference(getOldTime("checking.txt",tempAN),getCurrentTime()));
+            checkingAccounts[i].setAccountBalance(serviceFee);
+
             cout << "......" << endl;
             present = true;
             int selection;
@@ -371,6 +380,11 @@ void loginSavingsAcc(string tempAN)
     {
         if(tempAN == savingsAccounts[i].getAccountNumber())
         {
+            double interest=savingsAccounts[i].calcInt(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
+            savingsAccounts[i].setAccountBalance(interest);
+            double serviceFee=savingsAccounts[i].chargeService(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
+            savingsAccounts[i].setAccountBalance(serviceFee);
+            
             present = true;
             int choice;
             bool run = true;
@@ -404,6 +418,11 @@ void loginSavingsAcc(string tempAN)
                     }
                                         
                 }
+                else
+                {
+                    cout<<"Invalid selection, please enter correct option"<<endl;
+                    continue;
+                }
             }
                                     
         }
@@ -417,8 +436,10 @@ void loginSavingsAcc(string tempAN)
         cout<<"Account not found"<<endl;
 }
 
+
 void readSavingsFile()
 {
+    cout << "Reading from savings file... ";
     ifstream inFile;                      //opens the Savings Account File
     inFile.open("Savings.txt");
     string text;
@@ -440,10 +461,10 @@ void readSavingsFile()
                 text = text.substr(text.find(" ") + 1, text.length());
                 currentAccount.setOpenStatus(text.substr(0, text.find(" ")));
                 text = text.substr(text.find(" ") + 1, text.length());
-                cout<<text<<endl;
-                currentAccount.setStatus(text);
+                currentAccount.setStatus(text.substr(0, text.find(" ")));
                 text = text.substr(text.find(" ") + 1, text.length());
                 currentAccount.setDate(text);
+
             }
             else
             {
@@ -459,19 +480,22 @@ void readSavingsFile()
             cout<<"File not Found"<<endl;
         }
     }
-    
+    cout << "complete" << endl;
     inFile.close();
 }
+
 
 void updateSavingsFile()
 {
     ofstream outFile;
     outFile.open("Savings.txt");
+
     
     for(int i = 0; i < savingsAccounts.size(); i++)
     {
+        savingsAccounts[i].setDate(formatDate(getCurrentTime()));
         outFile<<savingsAccounts[i].getAccountNumber()<<'\n'<<savingsAccounts[i].getAccountBalance()<<" "<<
-        savingsAccounts[i].getOpenStatus()<<" "<<savingsAccounts[i].getStatus()<<endl;
+        savingsAccounts[i].getOpenStatus()<<" "<<savingsAccounts[i].getStatus()<<" "<< savingsAccounts[i].getDate()<<endl;
 
     }
 
@@ -480,44 +504,51 @@ void updateSavingsFile()
 }
 
 //read from checking file
-void readCheckingsFile(vector <Checking> &checkingAccounts, int totalAccounts)
+void readCheckingsFile()
 {
-    Checking tempChecking;
-    string text;
     cout << "Reading from checkings file... ";
-    ifstream inFile;
+    ifstream inFile;                      //opens the checkings Account File
     inFile.open("checking.txt");
+    string text;
 
-    if (inFile)
+
+    if(inFile)
     {
-        for (int i = 0; i < totalAccounts; i++)
+        while(getline(inFile, text))
         {
-            getline(inFile, text);
-            
-            if (text.substr(1, 1) == "*")
+            Checking currentAccount;
+
+            if(text.find("C") == 0)
             {
-                tempChecking.setAccountNumber(text.substr(0, text.find("*")));
+                currentAccount.setAccountNumber(text);
+                getline(inFile, text);
+
+                double balance = stod(text.substr(0, text.find(" ")));
+                currentAccount.setAccountBalance(balance);
+                text = text.substr(text.find(" ") + 1, text.length());
+                currentAccount.setOpenStatus(text.substr(0, text.find(" ")));
+                text = text.substr(text.find(" ") + 1, text.length());
+                currentAccount.setFlag(text.substr(0, text.find(" ")));
+                text = text.substr(text.find(" ") + 1, text.length());
+                currentAccount.setDate(text);
+
             }
             else
             {
-                tempChecking.setAccountNumber(text);
+                cout<<"Account not found"<<endl;
             }
-            getline(inFile, text);
-            tempChecking.setAccountBalance(stod(text.substr(0, text.find(" "))));
-            text = text.substr(text.find(" ") + 1, text.length());
-            tempChecking.setOpenStatus(text.substr(0, text.find(" ")));
-            text = text.substr(text.find(" ") + 1, text.length());
-            tempChecking.setFlag(text);
 
-            checkingAccounts.push_back(tempChecking);
-        }  
+           checkingAccounts.push_back(currentAccount);
+        }
     }
     else
     {
-        cout << "checking file not found" << endl;
+        {
+            cout<<"File not Found"<<endl;
+        }
     }
-
     cout << "complete" << endl;
+    cout << " " << endl;
     inFile.close();
 }
 
@@ -525,40 +556,14 @@ void updateCheckingsFile()
 {
     ofstream outFile;
     outFile.open("checking.txt");
-
     for (int i = 0; i < checkingAccounts.size(); i++)
     {
+        //checkingAccounts[i].setDate(formatDate(getCurrentTime()));
+        checkingAccounts[i].setDate(formatDate(getCurrentTime()));
         outFile << checkingAccounts[i].getAccountNumber() << "\n" <<
         checkingAccounts[i].getAccountBalance() << " " << checkingAccounts[i].getOpenStatus() <<
-        " " << checkingAccounts[i].getFlag() << endl;
+        " " << checkingAccounts[i].getFlag()<<" "<< checkingAccounts[i].getDate()<<endl;
     }
+    outFile.close();
 }
 
-int totalAccountCount()
-{
-    int totalAccounts = 0;
-
-    string text;
-    ifstream inFile("checking.txt");
-
-    if (!inFile)
-    {
-        cout << "checking file not found" << endl;
-        return -1;
-    }
-
-    while (getline(inFile, text))
-    {
-        if (text.find("C") == 0)
-        {
-            totalAccounts++;
-            getline(inFile, text);
-        }
-    }
-
-    cout << "Total checking accounts in file : " << totalAccounts << endl;
-
-inFile.close();
-
-return totalAccounts;
-}

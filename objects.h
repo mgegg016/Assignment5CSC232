@@ -14,7 +14,7 @@ protected:
 
 public:
     //contructor
-    Bank(string aN = "00000000", double aB = 0.0, string o = "true", double aI = 0.0, double aS = 0.0, string d="d 0 0 0000") {
+    Bank(string aN = "00000000", double aB = 0.0, string o = "true", double aI = 2, double aS = 5, string d="d 0 0 0000") {
         //default Number is 0000000, account Balance is 0, its closed, 0.0 interest rate, 0.0 annual charge
         //it starts at a low risk, it has N for none account type, and 0 annual service charge.
         accountNumber = aN;
@@ -40,7 +40,6 @@ public:
     double getService() {
         return annualService;
     }
-
     string getDate(){
         return lastDate;
     }
@@ -61,7 +60,6 @@ public:
     void setService(double aS) {
         annualService = aS;
     }
-
     void setDate(string d){
         lastDate=d;
     }
@@ -94,14 +92,41 @@ public:
         return accountBalance;
     }
 
-    double calcInt() {
+    double calcInt(int times) {
         /*
         •Daily Interest Rate = (Annual interest rate / Number of days in the year)
         •Daily Interest = Balance * Daily Interest Rate
-        •Balance = Balance + Daily Interest */
+        •Balance = Balance + Daily Interest 
+        */
         double dailyInterestRate = annualInterestRate / 365;
         double dailyInterest = accountBalance * dailyInterestRate;
-        accountBalance += dailyInterest;
+        if(times==0){
+            return accountBalance;
+        }
+        else{
+            for(int i=0;i<times;i++){
+                accountBalance += dailyInterest;
+            }
+        }
+        return accountBalance;
+    }
+
+    double chargeService(int times){
+        int years;
+        if(times==0){
+            return accountBalance;
+        }
+        else{
+            if(times<365){
+                years=0;
+            }
+            else
+                years=times/365;
+            for(int i=0;i<years;i++){
+                accountBalance-=annualService;
+            }
+        
+        }
         return accountBalance;
     }
 
@@ -124,12 +149,6 @@ public:
         flag = "L";
     }
     
-    //Second constructor. Assigning checking parameters to bank parameters
-    Checking(string checkingNum, double checkingBalance, string checkingStat, double checkingInterest, double checkingAnnualService) 
-    : Bank(checkingNum, checkingBalance, checkingStat, checkingInterest, checkingAnnualService)
-    {
-        flag = 'L';
-    }
     //function to set flag variable
     void setFlag(string f)
     {
@@ -150,13 +169,22 @@ public:
         {
             if (accountBalance - amount < 0)   //if the withdrawal amount will cause a negative, just deduct the $25 fundCharge from the balance.
             {
-                accountBalance += fundCharge;
+                accountBalance = fundCharge;
                 flag = "H";   //assign flag as highrisk
-                accountNumber = accountNumber + "*";   //high risk account indicator
+                if (accountNumber.substr(accountNumber.find("*"), accountNumber.length()) == "*")
+                {
+                    accountNumber = accountNumber;
+                }
+                else
+                {
+                    accountNumber = accountNumber + "*";
+                }
+                cout << "You withdrew more than you had, fund charge has been applied!" << endl;
             }
             else
             {
                 accountBalance -= amount;
+                cout << "withdraw Successful!" << endl;
             }
         }
         else
@@ -172,13 +200,22 @@ public:
         {
             if (amount > 9999.0)   //if the single deposit is more that 9999, flag it as a high risk account then add asterik to indicate.
             {
-            flag = "H";
-            accountNumber = accountNumber + "*";
-            accountBalance += amount;
+                flag = "H";
+                if (accountNumber.substr(accountNumber.find("*"), accountNumber.length()) == "*")
+                {
+                    accountNumber = accountNumber;
+                }
+                else
+                {
+                    accountNumber = accountNumber + "*";   //high risk account indicator
+                }
+                accountBalance += amount;
+                cout << "A $" << amount << " deposit has been made" << endl;
             }
             else    //else go ahead with normal functionality.
             {
             accountBalance += amount;
+            cout << "A $" << amount << " deposit has been made" << endl;
             }
         }
         else
