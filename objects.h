@@ -98,6 +98,7 @@ public:
         •Daily Interest = Balance * Daily Interest Rate
         •Balance = Balance + Daily Interest 
         */
+        //cout<<"Times: "<<times<<endl;
         double dailyInterestRate = annualInterestRate / 365;
         double dailyInterest = accountBalance * dailyInterestRate;
         if(times==0){
@@ -122,10 +123,11 @@ public:
             }
             else
                 years=times/365;
+                //cout<<"years: "<<years<<endl;
             for(int i=0;i<years;i++){
                 accountBalance-=annualService;
             }
-        
+            //cout<<accountBalance<<endl;
         }
         return accountBalance;
     }

@@ -380,14 +380,16 @@ void loginSavingsAcc(string tempAN)
     {
         if(tempAN == savingsAccounts[i].getAccountNumber())
         {
-            double interest=savingsAccounts[i].calcInt(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
-            savingsAccounts[i].setAccountBalance(interest);
-            double serviceFee=savingsAccounts[i].chargeService(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
-            savingsAccounts[i].setAccountBalance(serviceFee);
             
             present = true;
             int choice;
             bool run = true;
+            cout<<savingsAccounts.size()<<endl;
+            double interest=savingsAccounts[i].calcInt(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
+            savingsAccounts[i].setAccountBalance(interest);
+            double serviceFee=savingsAccounts[i].chargeService(getDifference(getOldTime("Savings.txt",tempAN),getCurrentTime()));
+            savingsAccounts[i].setAccountBalance(serviceFee);
+
             while(run)
             {
                 cout<<'\n'<<"Would you like to: "<<'\n'<<"[1] Deposit"<<'\n'<<"[2] Widthdraw"<<'\n'<<"[3] Check Account Balance"<<'\n'<<
